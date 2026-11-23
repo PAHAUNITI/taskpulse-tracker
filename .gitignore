@@ -58,3 +58,18 @@ Thumbs.db
 .coverage
 .pytest_cache/
 htmlcov/
+
+# Security Hardening (ECC & DevSecOps Guardian)
+.env*
+!.env.example
+*.pem
+*.key
+*.cert
+*.pfx
+*.p12
+*.sqlite
+*.sqlite3
+*.db
+secrets.*
+credentials.json
+service-account*.json
