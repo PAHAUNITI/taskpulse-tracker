@@ -54,3 +54,7 @@ out/
 *.sw?
 .DS_Store
 Thumbs.db
+
+.coverage
+.pytest_cache/
+htmlcov/
