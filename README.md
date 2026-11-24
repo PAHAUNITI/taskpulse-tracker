@@ -6,7 +6,8 @@
 > **Руководитель практики:** Роман Владимирович  
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Status: Day 2 Complete](https://img.shields.io/badge/Status-Day%202%20Requirements%20%26%20Use%20Case-success.svg)](#)
+[![Status: Day 3 Complete](https://img.shields.io/badge/Status-Day%203%20UML%2C%20IDEF0%2C%20DFD%20Complete-success.svg)](#)
+[![Diagrams: 10/10 Complete](https://img.shields.io/badge/Architecture-10%20Diagrams%20Suite-blueviolet.svg)](#)
 [![Stack: Node.js / React / Docker](https://img.shields.io/badge/Architecture-Modular%20Web-orange.svg)](#)
 [![Tests: 99% Coverage](https://img.shields.io/badge/Coverage-99%25-brightgreen.svg)](#)
 
@@ -37,33 +38,28 @@
 
 ## 📐 Архитектура требований (FR & NFR)
 
-### Функциональные требования (FR-01 .. FR-12):
-* **FR-01 — FR-02:** Регистрация, профили, безопасная аутентификация и RBAC-авторизация (HttpOnly Cookie, Argon2id/bcrypt).
-* **FR-03 — FR-04:** Управление бэклогом, Markdown-описание, приоритеты (`Critical`–`Low`), декомпозиция на подзадачи.
-* **FR-05 — FR-06:** Интерактивная Kanban-доска (Optimistic Drag-and-Drop) и назначение исполнителей.
-* **FR-07:** Модуль оперативного учета трудозатрат (Time Logging) с автопересчетом `time_spent` и `time_remaining`.
-* **FR-08:** Управление спринтами: фиксация емкости команды (Capacity), целей (Sprint Goal), старт и завершение итераций.
-* **FR-09:** Git Webhook интеграция (автоматическое связывание коммитов и веток по ключу `TP-XXX`).
-* **FR-10:** Быстрые фильтры («Мои задачи», по спринту, приоритету) и полнотекстовый поиск.
-* **FR-11:** Аналитика спринтов: график сгорания задач (Burndown Chart) и сводный табель Timesheet.
-* **FR-12:** Автоматический контроль ограничений незавершенного производства (WIP Limits).
-
-### Нефункциональные требования (NFR-01 .. NFR-10):
-* **Производительность:** Время отклика API < 200 мс (p95), рендеринг доски < 500 мс.
-* **Безопасность:** Защита от OWASP Top 10, криптография Argon2id, сессии HttpOnly/SameSite, zero-leak secrets.
-* **Надежность и масштабируемость:** ACID-транзакции, до 50 активных пользователей и 10 000 задач на проект.
-* **Автономность:** Развертывание в Docker Compose одной командой без сторонних SaaS-сервисов.
+Полная проектная спецификация доступна в каталоге `docs/requirements/`:
+* 📄 **[docs/requirements/functional.md](docs/requirements/functional.md):** 12 функциональных требований (FR-01 .. FR-12).
+* 📄 **[docs/requirements/non-functional.md](docs/requirements/non-functional.md):** 10 измеримых нефункциональных требований (NFR-01 .. NFR-10).
 
 ---
 
-## 📊 UML Диаграмма вариантов использования (Use Case)
+## 📊 Комплект архитектурных диаграмм (День 3: 10 диаграмм)
 
-Спецификация взаимодействия акторов и системы представлена на диаграмме:
+Все диаграммы разработаны в высоком разрешении и согласованы с единым источником правды (SSOT):
 
-![Use Case Diagram](docs/use-case-diagram.png)
-
-Полный PlantUML-код и детальное описание сценариев доступны в документе:  
-👉 **[docs/use-case.md](docs/use-case.md)**
+| № | Диаграмма | Стандарт / Нотация | Назначение | Исходный файл |
+| :-: | :--- | :--- | :--- | :--- |
+| **1** | **Class Diagram** | UML 2.5 Static | 7 классов (`User`, `Project`, `Task`, `Sprint`, `Worklog`, `GitCommit`, `KanbanBoard`), кратности, композиция, агрегация | [docs/diagrams/class.png](docs/diagrams/class.png) |
+| **2** | **Component Diagram** | UML 2.5 Logical | 6 модулей (`Web Client`, `API Gateway`, `Task Service`, `Time Service`, `Webhook`, `ORM`), интерфейсы Lollipop | [docs/diagrams/component.png](docs/diagrams/component.png) |
+| **3** | **Deployment Diagram** | UML 2.5 Physical | Топология узлов (Client Workstation, App Server Docker Node, Database Node), протоколы HTTPS, TCP 5432 | [docs/diagrams/deployment.png](docs/diagrams/deployment.png) |
+| **4** | **Activity Diagram** | UML 2.5 Dynamic | Смена статуса карточки, проверка WIP-лимитов (2 ветвления) и списание времени со свимлейнами | [docs/diagrams/activity.png](docs/diagrams/activity.png) |
+| **5** | **State Machine Diagram** | UML 2.5 Behavioral | Жизненный цикл сущности `Task` (5 состояний, 7 переходов, условия, возврат Reopen и правки по ревью) | [docs/diagrams/state-machine.png](docs/diagrams/state-machine.png) |
+| **6** | **Communication Diagram** | UML 2.5 Interaction | Сценарий приема Git-вебхука: 5 объектов, 7 пронумерованных сообщений обмена | [docs/diagrams/communication.png](docs/diagrams/communication.png) |
+| **7** | **IDEF0 A-0** | IDEF0 Functional | Контекстная диаграмма верхнего уровня (Входы, Управление, Механизмы, Выходы) | [docs/diagrams/idef0-a-0.png](docs/diagrams/idef0-a-0.png) |
+| **8** | **IDEF0 A0** | IDEF0 Functional | Декомпозиция на 4 подсистемы: Бэклог (А1), Спринты (А2), Трекинг (А3), Аналитика (А4) | [docs/diagrams/idef0-a0.png](docs/diagrams/idef0-a0.png) |
+| **9** | **DFD Level 0** | Data Flow Diagram | Глобальное движение данных: 3 внешние сущности, 5 процессов, 3 хранилища (D1, D2, D3) | [docs/diagrams/dfd-level-0.png](docs/diagrams/dfd-level-0.png) |
+| **10** | **DFD Level 1** | Data Flow Diagram | Декомпозиция процесса 3.0 на 4 подпроцесса (3.1..3.4) движения трудозатрат и статусов | [docs/diagrams/dfd-level-1.png](docs/diagrams/dfd-level-1.png) |
 
 ---
 
@@ -82,11 +78,24 @@
 ```text
 taskpulse-tracker/
 ├── docs/                                  # Проектная документация и отчеты
-│   ├── Day1_Concept_MVP.docx              # Официальный отчет за День 1
-│   ├── Day2_Requirements_UseCase.docx     # Официальный отчет за День 2
-│   ├── requirements.md                    # Спецификация FR и NFR требований
-│   ├── use-case.md                        # Сценарии и PlantUML код диаграммы
-│   └── use-case-diagram.png               # Векторное графическое изображение Use Case
+│   ├── requirements/                      # Спецификация требований
+│   │   ├── functional.md                  # Таблица функциональных требований FR
+│   │   └── non-functional.md              # Таблица нефункциональных требований NFR
+│   ├── diagrams/                          # Полный комплект из 10 инженерных диаграмм
+│   │   ├── class.png                      # 1. Диаграмма классов UML
+│   │   ├── component.png                  # 2. Диаграмма компонентов UML
+│   │   ├── deployment.png                 # 3. Диаграмма развертывания UML
+│   │   ├── activity.png                   # 4. Диаграмма деятельности UML
+│   │   ├── state-machine.png              # 5. Диаграмма состояний UML
+│   │   ├── communication.png              # 6. Диаграмма кооперации UML
+│   │   ├── idef0-a-0.png                  # 7. Контекстная диаграмма IDEF0 A-0
+│   │   ├── idef0-a0.png                   # 8. Диаграмма декомпозиции IDEF0 A0
+│   │   ├── dfd-level-0.png                # 9. Диаграмма потоков данных DFD Уровень 0
+│   │   └── dfd-level-1.png                # 10. Диаграмма потоков данных DFD Уровень 1
+│   └── reports/                           # Официальные отчеты по дням практики (.docx)
+│       ├── day-1-report.docx              # Отчет за День 1
+│       ├── day-2-report.docx              # Отчет за День 2
+│       └── day-3-report.docx              # Официальный отчет за День 3
 ├── src/                                   # Исходный код программного комплекса
 │   ├── client/                            # Веб-клиент (Frontend)
 │   │   ├── components/                    # UI-компоненты (Kanban, модалки, тайм-трекер)
@@ -115,9 +124,9 @@ taskpulse-tracker/
 
 - [x] **День 1:** Выбор темы, анализ предметной области, роли участников, спецификация MVP (MoSCoW), инициализация Git-репозитория.
 - [x] **День 2:** Формализация функциональных (FR-01..FR-12) и нефункциональных требований (NFR-01..NFR-10), построение UML Use Case диаграммы, описание сценариев, организация структуры проекта.
-- [ ] **День 3:** Проектирование схемы реляционной базы данных (ER-диаграмма), миграции, REST API контракты и авторизация.
-- [ ] **День 4:** Разработка пользовательского интерфейса (Kanban-доска, Optimistic Drag-and-Drop, таймер списания часов).
-- [ ] **День 5:** Интеграция Git-вебхуков, аналитические дашборды (Burndown, Timesheet), итоговая сборка и тестирование.
+- [x] **День 3:** Комплексное проектирование программной системы: разработка комплекта из 10 диаграмм (Class, Component, Deployment, Activity, State Machine, Communication, IDEF0 A-0, IDEF0 A0, DFD 0, DFD 1) и официального отчета.
+- [ ] **День 4:** Разработка серверных модулей, реляционной схемы базы данных и пользовательского интерфейса (Kanban, таймер).
+- [ ] **День 5:** Интеграция Git-вебхуков, модульное тестирование, итоговая сборка и защита проекта.
 
 ---
 
